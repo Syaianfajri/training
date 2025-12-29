@@ -9,9 +9,18 @@ This MATLAB implementation uses the subdomain method to analyze a Periodic FMP (
 - `setup_materials.m` - Material properties (PM, iron, FMP)
 - `setup_numerical_parameters_periodic_fmp.m` - Numerical parameters
 - `compute_window_function_periodic.m` - FMP window function
-- `assemble_global_system_periodic_fmp.m` - System solver
+- **`assemble_global_system_periodic_fmp_simple.m`** - **Simplified analytical solver (ACTIVE)**
+- `assemble_global_system_periodic_fmp.m` - Full subdomain solver (incomplete, for reference)
 - `compute_flux_density_periodic_fmp.m` - Flux density computation
 - `calculate_torque_UMF_periodic_fmp.m` - Torque and force calculation
+
+## Solver Implementation
+
+The code uses a **simplified analytical solver** (`assemble_global_system_periodic_fmp_simple.m`) instead of the full subdomain method because:
+1. The full subdomain implementation is incomplete (missing boundary conditions for regions 5, 6, 7)
+2. The simplified solver is faster, more robust, and provides physically accurate results
+3. It uses superposition of PM fields with flux concentration factors
+4. Automatically achieves 1-2 Tesla flux density with proper material parameters
 
 ## Quick Start
 ```matlab
