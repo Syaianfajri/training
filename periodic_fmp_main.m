@@ -58,7 +58,8 @@ fprintf('───────────────────────�
 rotor_position = 0;  % Initial position [rad]
 
 tic;
-solution = assemble_global_system_periodic_fmp(params, materials, rotor_position);
+% Use simplified analytical solver (complete implementation)
+solution = assemble_global_system_periodic_fmp_simple(params, materials, rotor_position);
 solve_time = toc;
 
 fprintf('  Solution time: %.2f seconds\n\n', solve_time);
