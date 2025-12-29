@@ -83,7 +83,7 @@ function solution = assemble_global_system_periodic_fmp(params, materials, rotor
             A(row_base+1, 2*N_eqs+idx) = -1;  % A2
             A(row_base+1, 3*N_eqs+idx) = 0;   % B2
             % RHS includes PM source term
-            b(row_base+1) = M_n_inner * (R2^2 - R1^2) / 2;
+            b(row_base+1) = M_n_inner(idx) * (R2^2 - R1^2) / 2;
         else
             A(row_base+1, idx) = R2^n;           % A1
             A(row_base+1, N_eqs+idx) = R2^(-n);  % B1
@@ -91,9 +91,9 @@ function solution = assemble_global_system_periodic_fmp(params, materials, rotor
             A(row_base+1, 3*N_eqs+idx) = -R2^(-n); % B2
             % RHS includes PM source term
             if n > 0
-                b(row_base+1) = M_n_inner * (R2^(n+1) - R1^(n+1)) / (n+1);
+                b(row_base+1) = M_n_inner(idx) * (R2^(n+1) - R1^(n+1)) / (n+1);
             else
-                b(row_base+1) = M_n_inner * (R2^(n+1) - R1^(n+1)) / (n+1);
+                b(row_base+1) = M_n_inner(idx) * (R2^(n+1) - R1^(n+1)) / (n+1);
             end
         end
 
@@ -108,7 +108,7 @@ function solution = assemble_global_system_periodic_fmp(params, materials, rotor
             A(row_base+2, 2*N_eqs+idx) = -n * R2^(n-1);
             A(row_base+2, 3*N_eqs+idx) = n * R2^(-n-1);
             % RHS from PM
-            b(row_base+2) = M_n_inner * mu_ratio * R2^n;
+            b(row_base+2) = M_n_inner(idx) * mu_ratio * R2^n;
         else
             % n=0: special handling
             A(row_base+2, N_eqs+idx) = -materials.mu_r_PM / materials.mu_r_air;
