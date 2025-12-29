@@ -41,7 +41,7 @@ function geometry = setup_geometry_periodic_fmp()
     % PERIODIC FMP CONFIGURATION
     % =====================================================================
     geometry.N_FMP = 8;                     % Number of FMP segments
-    geometry.theta_FMP = deg2rad(90);       % Angular width of each FMP segment [rad]
+    geometry.theta_FMP = deg2rad(120);       % Angular width of each FMP segment [rad]
     geometry.fill_factor = (geometry.N_FMP * geometry.theta_FMP) / (2*pi);
 
     % Calculate FMP segment centers (evenly distributed)
