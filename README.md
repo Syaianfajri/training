@@ -36,15 +36,33 @@ materials.mu_r_FMP = 5000;       % FMP relative permeability
 ```
 
 ### 2. Geometry Parameters (in `setup_geometry_periodic_fmp.m`)
+**New Naming Convention:**
 ```matlab
-geometry.R2 = 25e-3;   % Inner PM outer radius
-geometry.R3 = 26e-3;   % Inner air gap (1mm gap)
-geometry.R4 = 27e-3;   % Outer air gap (1mm gap)
-geometry.R5 = 28e-3;   % Outer PM inner radius
+geometry.R_i  = 10e-3;    % Inner shaft radius
+geometry.R_ii = 20e-3;    % Inner PM inner radius
+geometry.R_io = 26e-3;    % Inner PM outer radius (air-gap inner)
+geometry.R_pi = 27e-3;    % FMP inner radius
+geometry.R_po = 31e-3;    % FMP outer radius
+geometry.R_oi = 32e-3;    % Outer PM inner radius (air-gap outer)
+geometry.R_oo = 38e-3;    % Outer PM outer radius
+geometry.R_o  = 48e-3;    % Outer back-iron radius
 
-% Smaller air gaps → Higher flux density
-% Typical range: 0.5-2mm
+geometry.P_i = 10;        % Inner rotor pole pairs
+geometry.P_o = 11;        % Outer rotor pole pairs
+
+geometry.N_FMP = 8;       % Number of FMP segments
+geometry.theta_FMP = deg2rad(90);  % Angular width per segment [rad]
+
+geometry.e = 5e-3;        % Eccentricity [m]
+geometry.L_stack = 26e-3; % Axial stack length [m]
 ```
+
+**Key Air-Gap Dimensions:**
+- Inner air-gap: 1 mm (R_io to R_pi)
+- FMP zone thickness: 4 mm (R_pi to R_po)
+- Outer air-gap: 1 mm (R_po to R_oi)
+
+*Note: Smaller air gaps → Higher flux density (typical range: 0.5-2mm)*
 
 ### 3. Flux Density Calculation (in `compute_flux_density_periodic_fmp.m`)
 ```matlab
@@ -59,14 +77,18 @@ modulation_depth = 0.3;        % FMP modulation (30%)
 ### To INCREASE flux density (if Br, Bt < 1 Tesla):
 1. **Increase PM remanent flux**: `materials.Br = 1.45` (up to 1.5T for high-grade NdFeB)
 2. **Increase current density**: `materials.J_current = 10e6`
-3. **Decrease air gap**: Make R3-R2 and R5-R4 smaller (e.g., 0.5mm)
+3. **Decrease air gaps**:
+   - Make inner gap smaller: `R_pi - R_io = 0.5e-3` (0.5mm)
+   - Make outer gap smaller: `R_oi - R_po = 0.5e-3` (0.5mm)
 4. **Increase flux boost**: `flux_boost = 2.0`
 5. **Increase PM contribution**: `PM_contribution_Br = materials.Br * 0.9`
 
 ### To DECREASE flux density (if Br, Bt > 2 Tesla):
 1. **Decrease PM remanent flux**: `materials.Br = 1.2`
 2. **Decrease current density**: `materials.J_current = 5e6`
-3. **Increase air gap**: Make R3-R2 and R5-R4 larger (e.g., 2mm)
+3. **Increase air gaps**:
+   - Make inner gap larger: `R_pi - R_io = 2e-3` (2mm)
+   - Make outer gap larger: `R_oi - R_po = 2e-3` (2mm)
 4. **Decrease flux boost**: `flux_boost = 1.0`
 5. **Decrease PM contribution**: `PM_contribution_Br = materials.Br * 0.6`
 

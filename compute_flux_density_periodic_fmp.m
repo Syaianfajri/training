@@ -18,20 +18,36 @@ function [Br, Bt] = compute_flux_density_periodic_fmp(solution, params)
     n_range = solution.n_range;
 
     % Determine which region r_eval is in
-    if r_eval >= geometry.R4 && r_eval <= geometry.R5
+    if r_eval >= geometry.R_pi && r_eval <= geometry.R_po
+        % FMP zone - use region 3 coefficients
+        fprintf('    → Evaluating in FMP zone (R_pi=%.1fmm to R_po=%.1fmm)\n', ...
+            geometry.R_pi*1e3, geometry.R_po*1e3);
+        region_coeffs_A = solution.A3;
+        region_coeffs_B = solution.B3;
+    elseif r_eval >= geometry.R_io && r_eval < geometry.R_pi
+        % Inner air gap - use region 2 coefficients
+        fprintf('    → Evaluating in inner air gap (R_io to R_pi)\n');
+        region_coeffs_A = solution.A2;
+        region_coeffs_B = solution.B2;
+    elseif r_eval > geometry.R_po && r_eval <= geometry.R_oi
         % Outer air gap - use region 4 coefficients
-        fprintf('    → Evaluating in outer air gap (R4-R5)\n');
+        fprintf('    → Evaluating in outer air gap (R_po to R_oi)\n');
         region_coeffs_A = solution.A4;
         region_coeffs_B = solution.B4;
     elseif r_eval >= geometry.R2 && r_eval <= geometry.R3
-        % Inner air gap - use region 2 coefficients
+        % Backward compatibility: Inner air gap (old naming)
         fprintf('    → Evaluating in inner air gap (R2-R3)\n');
         region_coeffs_A = solution.A2;
         region_coeffs_B = solution.B2;
-    else
-        warning('Evaluation radius not in air gap, using outer air gap');
+    elseif r_eval >= geometry.R4 && r_eval <= geometry.R5
+        % Backward compatibility: Outer air gap (old naming)
+        fprintf('    → Evaluating in outer air gap (R4-R5)\n');
         region_coeffs_A = solution.A4;
         region_coeffs_B = solution.B4;
+    else
+        warning('Evaluation radius not in expected region, using FMP zone coefficients');
+        region_coeffs_A = solution.A3;
+        region_coeffs_B = solution.B3;
     end
 
     % Initialize flux density arrays
