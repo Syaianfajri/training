@@ -15,7 +15,7 @@ function materials = setup_materials()
     % PERMANENT MAGNETS (NdFeB - High Grade)
     % =====================================================================
     % Using high-grade NdFeB to achieve 1-2 Tesla flux density
-    materials.Br = 1.4;             % Remanent flux density [T] - INCREASED
+    materials.Br = 1.15;             % Remanent flux density [T] - INCREASED
     materials.mu_r_PM = 1.05;       % Relative permeability of PM
 
     % Magnetization direction (radial)
@@ -24,12 +24,12 @@ function materials = setup_materials()
     % =====================================================================
     % FMP (Flux Modulating Parts) - High permeability iron
     % =====================================================================
-    materials.mu_r_FMP = 5000;      % Relative permeability (high for good flux modulation)
+    materials.mu_r_FMP = 4000;      % Relative permeability (high for good flux modulation)
 
     % =====================================================================
     % BACK IRON - High permeability steel
     % =====================================================================
-    materials.mu_r_iron = 5000;     % Relative permeability
+    materials.mu_r_iron = 4000;     % Relative permeability
 
     % =====================================================================
     % AIR GAP
